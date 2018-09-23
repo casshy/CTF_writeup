@@ -1,3 +1,6 @@
 *.*~
 *.id*
 *.til
+*.nam
+.gdb_history
+.python-version
