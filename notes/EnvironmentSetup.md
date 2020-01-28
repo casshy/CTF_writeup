@@ -50,7 +50,8 @@ chmod +x ~/bin/rp
 
 ## peda
 ````bash
-git clone https://github.com/zachriggle/peda.git ~/peda
+sudo apt install install binutils python2.7 perl socat git build-essential gdb gdbserver
+git clone https://github.com/longld/peda.git ~/peda
 echo "source ~/peda/peda.py" >> ~/.gdbinit
 ````
 
