@@ -61,7 +61,7 @@ Disassembly of section .text:
 | --- | --- |
 | -d<br>--disassemble | 命令を含むと思われるセクションを逆アセンブルする |
 | -D<br>--disassemble-all | すべてのセクションを逆アセンブルする |
-| --endian={big|little} | オブジェクトファイルのエンディアンを指定する |
+| --endian={big\|little} | オブジェクトファイルのエンディアンを指定する |
 | --file-headers | オブジェクトファイルのoverallヘッダ情報の要約を表示する |
 | --section=name | 特性のセクションのみの情報を表示する |
 | --architecture=machine | 逆アセンブルする際のアーキテクチャを指定する |
