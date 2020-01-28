@@ -17,7 +17,17 @@ int main() {
 gcc test.c -o test
 ````
 
-## ELFヘッダを表示
+## ヘッダを表示
+
+- [ELFヘッダ(-h)](#ELFヘッダ-h)
+- [プログラムヘッダ(-l)](#プログラムヘッダ-l)
+- [セクションヘッダ(-S)](#セクションヘッダ-s)
+- シンボルテーブル(-s)
+- 動的シンボルテーブル(--dyn-syms)
+- リロケーション情報(-r)
+- 動的セクション(-d)
+
+### ELFヘッダ(-h)
 ````
 $ readelf -h test
 ELF Header:
@@ -41,8 +51,41 @@ ELF Header:
   Number of section headers:         29
   Section header string table index: 28
 ````
+### プログラムヘッダ(-l)
+````
+$ readelf -l -W test
 
-## セクション一覧を表示
+Elf file type is DYN (Shared object file)
+Entry point 0x5a0
+There are 9 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  PHDR           0x000040 0x0000000000000040 0x0000000000000040 0x0001f8 0x0001f8 R   0x8
+  INTERP         0x000238 0x0000000000000238 0x0000000000000238 0x00001c 0x00001c R   0x1
+      [Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]
+  LOAD           0x000000 0x0000000000000000 0x0000000000000000 0x0008d8 0x0008d8 R E 0x200000
+  LOAD           0x000db0 0x0000000000200db0 0x0000000000200db0 0x000260 0x000268 RW  0x200000
+  DYNAMIC        0x000dc0 0x0000000000200dc0 0x0000000000200dc0 0x0001f0 0x0001f0 RW  0x8
+  NOTE           0x000254 0x0000000000000254 0x0000000000000254 0x000044 0x000044 R   0x4
+  GNU_EH_FRAME   0x000794 0x0000000000000794 0x0000000000000794 0x00003c 0x00003c R   0x4
+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10
+  GNU_RELRO      0x000db0 0x0000000000200db0 0x0000000000200db0 0x000250 0x000250 R   0x1
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     
+   01     .interp
+   02     .interp .note.ABI-tag .note.gnu.build-id .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rela.dyn .rela.plt .init .plt .plt.got .text .fini .rodata .eh_frame_hdr .eh_frame
+   03     .init_array .fini_array .dynamic .got .data .bss
+   04     .dynamic
+   05     .note.ABI-tag .note.gnu.build-id
+   06     .eh_frame_hdr
+   07     
+   08     .init_array .fini_array .dynamic .got
+````
+
+### セクションヘッダ(-S)
 ````
 $ readelf -S -W test
 There are 29 section headers, starting at offset 0x1960:
@@ -84,6 +127,161 @@ Key to Flags:
   C (compressed), x (unknown), o (OS specific), E (exclude),
   l (large), p (processor specific)
 ````
+
+### シンボルテーブル(-s)
+````
+$ readelf -s -W test
+
+Symbol table '.dynsym' contains 8 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
+     1: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _ITM_deregisterTMCloneTable
+     2: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND puts@GLIBC_2.2.5 (2)
+     3: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND __stack_chk_fail@GLIBC_2.4 (3)
+     4: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND __libc_start_main@GLIBC_2.2.5 (2)
+     5: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND __gmon_start__
+     6: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _ITM_registerTMCloneTable
+     7: 0000000000000000     0 FUNC    WEAK   DEFAULT  UND __cxa_finalize@GLIBC_2.2.5 (2)
+
+Symbol table '.symtab' contains 64 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
+     1: 0000000000000238     0 SECTION LOCAL  DEFAULT    1
+     2: 0000000000000254     0 SECTION LOCAL  DEFAULT    2
+     3: 0000000000000274     0 SECTION LOCAL  DEFAULT    3
+     4: 0000000000000298     0 SECTION LOCAL  DEFAULT    4
+     5: 00000000000002b8     0 SECTION LOCAL  DEFAULT    5
+     6: 0000000000000378     0 SECTION LOCAL  DEFAULT    6
+     7: 0000000000000416     0 SECTION LOCAL  DEFAULT    7
+     8: 0000000000000428     0 SECTION LOCAL  DEFAULT    8
+     9: 0000000000000458     0 SECTION LOCAL  DEFAULT    9
+    10: 0000000000000518     0 SECTION LOCAL  DEFAULT   10
+    11: 0000000000000548     0 SECTION LOCAL  DEFAULT   11
+    12: 0000000000000560     0 SECTION LOCAL  DEFAULT   12
+    13: 0000000000000590     0 SECTION LOCAL  DEFAULT   13
+    14: 00000000000005a0     0 SECTION LOCAL  DEFAULT   14
+    15: 0000000000000784     0 SECTION LOCAL  DEFAULT   15
+    16: 0000000000000790     0 SECTION LOCAL  DEFAULT   16
+    17: 0000000000000794     0 SECTION LOCAL  DEFAULT   17
+    18: 00000000000007d0     0 SECTION LOCAL  DEFAULT   18
+    19: 0000000000200db0     0 SECTION LOCAL  DEFAULT   19
+    20: 0000000000200db8     0 SECTION LOCAL  DEFAULT   20
+    21: 0000000000200dc0     0 SECTION LOCAL  DEFAULT   21
+    22: 0000000000200fb0     0 SECTION LOCAL  DEFAULT   22
+    23: 0000000000201000     0 SECTION LOCAL  DEFAULT   23
+    24: 0000000000201010     0 SECTION LOCAL  DEFAULT   24
+    25: 0000000000000000     0 SECTION LOCAL  DEFAULT   25
+    26: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS crtstuff.c
+    27: 00000000000005d0     0 FUNC    LOCAL  DEFAULT   14 deregister_tm_clones
+    28: 0000000000000610     0 FUNC    LOCAL  DEFAULT   14 register_tm_clones
+    29: 0000000000000660     0 FUNC    LOCAL  DEFAULT   14 __do_global_dtors_aux
+    30: 0000000000201010     1 OBJECT  LOCAL  DEFAULT   24 completed.7697
+    31: 0000000000200db8     0 OBJECT  LOCAL  DEFAULT   20 __do_global_dtors_aux_fini_array_entry
+    32: 00000000000006a0     0 FUNC    LOCAL  DEFAULT   14 frame_dummy
+    33: 0000000000200db0     0 OBJECT  LOCAL  DEFAULT   19 __frame_dummy_init_array_entry
+    34: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS test.c
+    35: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS crtstuff.c
+    36: 00000000000008d4     0 OBJECT  LOCAL  DEFAULT   18 __FRAME_END__
+    37: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS
+    38: 0000000000200db8     0 NOTYPE  LOCAL  DEFAULT   19 __init_array_end
+    39: 0000000000200dc0     0 OBJECT  LOCAL  DEFAULT   21 _DYNAMIC
+    40: 0000000000200db0     0 NOTYPE  LOCAL  DEFAULT   19 __init_array_start
+    41: 0000000000000794     0 NOTYPE  LOCAL  DEFAULT   17 __GNU_EH_FRAME_HDR
+    42: 0000000000200fb0     0 OBJECT  LOCAL  DEFAULT   22 _GLOBAL_OFFSET_TABLE_
+    43: 0000000000000780     2 FUNC    GLOBAL DEFAULT   14 __libc_csu_fini
+    44: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _ITM_deregisterTMCloneTable
+    45: 0000000000201000     0 NOTYPE  WEAK   DEFAULT   23 data_start
+    46: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND puts@@GLIBC_2.2.5
+    47: 0000000000201010     0 NOTYPE  GLOBAL DEFAULT   23 _edata
+    48: 0000000000000784     0 FUNC    GLOBAL DEFAULT   15 _fini
+    49: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND __stack_chk_fail@@GLIBC_2.4
+    50: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND __libc_start_main@@GLIBC_2.2.5
+    51: 0000000000201000     0 NOTYPE  GLOBAL DEFAULT   23 __data_start
+    52: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND __gmon_start__
+    53: 0000000000201008     0 OBJECT  GLOBAL HIDDEN    23 __dso_handle
+    54: 0000000000000790     4 OBJECT  GLOBAL DEFAULT   16 _IO_stdin_used
+    55: 0000000000000710   101 FUNC    GLOBAL DEFAULT   14 __libc_csu_init
+    56: 0000000000201018     0 NOTYPE  GLOBAL DEFAULT   24 _end
+    57: 00000000000005a0    43 FUNC    GLOBAL DEFAULT   14 _start
+    58: 0000000000201010     0 NOTYPE  GLOBAL DEFAULT   24 __bss_start
+    59: 00000000000006aa    90 FUNC    GLOBAL DEFAULT   14 main
+    60: 0000000000201010     0 OBJECT  GLOBAL HIDDEN    23 __TMC_END__
+    61: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _ITM_registerTMCloneTable
+    62: 0000000000000000     0 FUNC    WEAK   DEFAULT  UND __cxa_finalize@@GLIBC_2.2.5
+    63: 0000000000000548     0 FUNC    GLOBAL DEFAULT   11 _init
+````
+
+### 動的シンボルテーブル(--dyn-syms)
+````
+$ readelf --dyn-syms -W test
+
+Symbol table '.dynsym' contains 8 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
+     1: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _ITM_deregisterTMCloneTable
+     2: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND puts@GLIBC_2.2.5 (2)
+     3: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND __stack_chk_fail@GLIBC_2.4 (3)
+     4: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND __libc_start_main@GLIBC_2.2.5 (2)
+     5: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND __gmon_start__
+     6: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _ITM_registerTMCloneTable
+     7: 0000000000000000     0 FUNC    WEAK   DEFAULT  UND __cxa_finalize@GLIBC_2.2.5 (2)
+````
+
+### リロケーション情報(-r)
+````
+$ readelf -r -W test
+
+Relocation section '.rela.dyn' at offset 0x458 contains 8 entries:
+    Offset             Info             Type               Symbol's Value  Symbol's Name + Addend
+0000000000200db0  0000000000000008 R_X86_64_RELATIVE                         6a0
+0000000000200db8  0000000000000008 R_X86_64_RELATIVE                         660
+0000000000201008  0000000000000008 R_X86_64_RELATIVE                         201008
+0000000000200fd8  0000000100000006 R_X86_64_GLOB_DAT      0000000000000000 _ITM_deregisterTMCloneTable + 0
+0000000000200fe0  0000000400000006 R_X86_64_GLOB_DAT      0000000000000000 __libc_start_main@GLIBC_2.2.5 + 0
+0000000000200fe8  0000000500000006 R_X86_64_GLOB_DAT      0000000000000000 __gmon_start__ + 0
+0000000000200ff0  0000000600000006 R_X86_64_GLOB_DAT      0000000000000000 _ITM_registerTMCloneTable + 0
+0000000000200ff8  0000000700000006 R_X86_64_GLOB_DAT      0000000000000000 __cxa_finalize@GLIBC_2.2.5 + 0
+
+Relocation section '.rela.plt' at offset 0x518 contains 2 entries:
+    Offset             Info             Type               Symbol's Value  Symbol's Name + Addend
+0000000000200fc8  0000000200000007 R_X86_64_JUMP_SLOT     0000000000000000 puts@GLIBC_2.2.5 + 0
+0000000000200fd0  0000000300000007 R_X86_64_JUMP_SLOT     0000000000000000 __stack_chk_fail@GLIBC_2.4 + 0
+````
+
+### 動的セクション(-d)
+````
+$ readelf -d -W test
+
+Dynamic section at offset 0xdc0 contains 27 entries:
+  Tag        Type                         Name/Value
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+ 0x000000000000000c (INIT)               0x548
+ 0x000000000000000d (FINI)               0x784
+ 0x0000000000000019 (INIT_ARRAY)         0x200db0
+ 0x000000000000001b (INIT_ARRAYSZ)       8 (bytes)
+ 0x000000000000001a (FINI_ARRAY)         0x200db8
+ 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)
+ 0x000000006ffffef5 (GNU_HASH)           0x298
+ 0x0000000000000005 (STRTAB)             0x378
+ 0x0000000000000006 (SYMTAB)             0x2b8
+ 0x000000000000000a (STRSZ)              157 (bytes)
+ 0x000000000000000b (SYMENT)             24 (bytes)
+ 0x0000000000000015 (DEBUG)              0x0
+ 0x0000000000000003 (PLTGOT)             0x200fb0
+ 0x0000000000000002 (PLTRELSZ)           48 (bytes)
+ 0x0000000000000014 (PLTREL)             RELA
+ 0x0000000000000017 (JMPREL)             0x518
+ 0x0000000000000007 (RELA)               0x458
+ 0x0000000000000008 (RELASZ)             192 (bytes)
+ 0x0000000000000009 (RELAENT)            24 (bytes)
+ 0x000000000000001e (FLAGS)              BIND_NOW
+ 0x000000006ffffffb (FLAGS_1)            Flags: NOW PIE
+ 0x000000006ffffffe (VERNEED)            0x428
+ 0x000000006fffffff (VERNEEDNUM)         1
+ 0x000000006ffffff0 (VERSYM)             0x416
+ 0x000000006ffffff9 (RELACOUNT)          3
+ 0x0000000000000000 (NULL)               0x0
+ ````
 
 ## 特定のセクションヘッダの情報を表示する
 ### 16進数で表示
