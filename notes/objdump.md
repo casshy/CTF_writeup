@@ -64,7 +64,7 @@ Disassembly of section .text:
 | --endian={big\|little} | オブジェクトファイルのエンディアンを指定する |
 | -C<br>--demangle | 低レベルのシンボル名をユーザレベルの名前に変換する. C++の関数名の可読性が向上する.|
 | --file-headers | オブジェクトファイルのoverallヘッダ情報の要約を表示する |
-| --section=name | 特性のセクションのみの情報を表示する |
+| -j<br>--section=name | 特性のセクションのみ表示する |
 | --architecture=machine | 逆アセンブルする際のアーキテクチャを指定する |
 | -S<br>--source | 可能ならソースコードを逆アセンブル結果と併せて表示する |
 | --no-show-raw-insn | 逆アセンブルする際に16進数のバイトコードを表示しない |
