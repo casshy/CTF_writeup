@@ -76,6 +76,11 @@ chmod +x idafree70_linux.run
 ./idafree70_linux.run
 ````
 
+## Ghidra
+Download zip file from official site and extract it anywhere you like.  
+You need openjdk11 or later.  
+https://ghidra-sre.org/
+
 ## References
 - http://nonkuru.hateblo.jp/entry/2016/06/24/233622
 - https://7me.oji.0j0.jp/2017/python-curses-pyenv-no-module.html
